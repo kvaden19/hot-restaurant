@@ -55,7 +55,21 @@ app.get('/tables', (req, res) => res.sendFile(path.join(__dirname, 'tables.html'
 app.get('/reserve', (req, res) => res.sendFile(path.join(__dirname, 'reserve.html')));
 
 // Routes to handle data
+// Make a new reservation
+app.post('/api/tables', (req, res) => {
+    // req.body hosts is equal to the JSON post sent from the user
+    // This works because of our body parsing middleware
+    const newRes = req.body;
+    console.log(newRes);
+
+    if (tables.length < 5) {
+        tables.push(newRes);
+        res.json(true);
+    } else {
+        waitlist.push(newRes);
+        res.json(false);
+    }
+  });
 
 // Starts the server to begin listening
-
 app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
